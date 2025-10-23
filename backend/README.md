@@ -1,45 +1,104 @@
-# User Registration API
+# Auth endpoints (concise)
 
-This document describes the `POST /api/user/register` endpoint in the backend.
+This file documents two auth endpoints: register and login.
 
-## Endpoint
+---
 
-- URL: `/api/user/register`
+## POST /api/user/register
+
+Purpose: Create a user, set auth cookie `token`, and return the user (password excluded).
+
+Request JSON:
+
+{
+  "fullname": { "firstname": "string", "lastname": "string" },
+  "email": "string",
+  "password": "string"
+}
+
+Validation (route messages):
+- `fullname.firstname`: required, min 3 — "First name must be at least 3 character long"
+- `email`: valid email — "Invalid Email"
+- `password`: min 6 — "Password must be atleast 6 character long"
+
+Responses:
+- 201 Created: user created, `Set-Cookie: token=<jwt>`; body: user object (no password).
+- 400 Bad Request: validation errors — body: { message: [ ...errors ] }
+- 500 Internal Server Error: unexpected error.
+
+Quick example (success):
+
+{
+  "_id": "64a1f0...",
+  "fullname": { "firstname": "Jane", "lastname": "Smith" },
+  "email": "jane@example.com",
+  "socketId": null
+}
+
+---
+
+## POST /api/user/login
+
+Purpose: Authenticate user, set `token` cookie, and return the user (password excluded).
+
+Request JSON:
+
+{
+  "email": "string",
+  "password": "string"
+}
+
+Validation (route messages):
+- `email`: valid email — "Invalid Email"
+- `password`: min 6 — "Password must be atleast 6 character long"
+
+Responses:
+- 200 OK: auth successful, `Set-Cookie: token=<jwt>`; body: user object (no password).
+- 400 Bad Request: validation errors — body: { message: [ ...errors ] }
+- 401 Unauthorized: invalid credentials — { message: "Invalid Email or Password" }
+- 500 Internal Server Error: unexpected error.
+
+Quick example (failure - invalid credentials):
+
+{ "message": "Invalid Email or Password" }
+
+---
+
+Notes:
+- Passwords are hashed before saving. Mongoose schema sets `password.select=false`, so responses omit it.
+- Ensure `process.env.JWT_SECRET` is set for token generation.
+
+
+## Login Endpoint
+
+- URL: `/api/user/login`
 - Method: `POST`
-- Purpose: Register a new user and return the created user object and an auth cookie containing a JWT.
+- Purpose: Authenticate an existing user. On success, sets a `token` cookie with a JWT and returns the user object (password omitted).
 
-## Request Body (JSON)
+### Request Body (JSON)
 
 The endpoint expects a JSON body with the following shape:
 
 {
-  "fullname": {
-    "firstname": "string",  // required, min length 3
-    "lastname": "string"    // optional, min length 3 if provided
-  },
-  "email": "string",       // required, must be a valid email
-  "password": "string"     // required, min length 6
+  "email": "string",     // required, must be a valid email
+  "password": "string"   // required, min length 6
 }
 
 Validation rules and messages applied by the route:
 
-- `fullname.firstname` - required; must be at least 3 characters long.
-  - Message: "First name must be at least 3 character long"
 - `email` - required; must be a valid email address.
   - Message: "Invalid Email"
 - `password` - required; must be at least 6 characters long.
   - Message: "Password must be atleast 6 character long"
 
-Note: The controller also hashes the password before saving.
+### Responses
 
-## Responses
-
-- 201 Created
-  - Description: User successfully created. The response body contains the created user object (password is omitted by default). A cookie named `token` is set with the authentication token.
+- 200 OK
+  - Description: Authentication successful. Returns the user object (password omitted) and sets a `token` cookie.
   - Example body:
 
 ```
-HTTP/1.1 201 Created
+HTTP/1.1 200 OK
 Set-Cookie: token=<jwt>; HttpOnly
 Content-Type: application/json
 
@@ -56,42 +115,31 @@ Content-Type: application/json
 
 - 400 Bad Request
   - Description: Validation failed for the input. Response body contains an array of validation error objects from `express-validator`.
+
+- 401 Unauthorized
+  - Description: Invalid credentials (email not found or password mismatch).
   - Example body:
 
 ```
-HTTP/1.1 400 Bad Request
+HTTP/1.1 401 Unauthorized
 Content-Type: application/json
 
 {
-  "message": [
-    {
-      "value": "Jo",
-      "msg": "First name must be at least 3 character long",
-      "param": "fullname.firstname",
-      "location": "body"
-    }
-  ]
+  "message": "Invalid Email or Password"
 }
 ```
 
 - 500 Internal Server Error
-  - Description: Unexpected server error (e.g., database error, hashing error). Response body contains an error message.
+  - Description: Unexpected server error (e.g., database error). Response body contains an error message.
 
-## Example cURL
+### Example cURL
 
 ```bash
-curl -X POST http://localhost:3000/api/user/register \
+curl -X POST http://localhost:3000/api/user/login \
   -H "Content-Type: application/json" \
   -d '{
-    "fullname": {"firstname": "Jane", "lastname": "Smith"},
     "email": "jane@example.com",
     "password": "secret123"
   }'
 ```
-
-## Notes
-
-- The `password` field is hashed before storing in the database.
-- The `password` field is set with `select:false` in the Mongoose schema, so it won't appear in the returned user object.
-- The JWT secret used for token generation must be provided in `process.env.JWT_SECRET`.
 
