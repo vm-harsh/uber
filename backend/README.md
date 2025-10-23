@@ -68,6 +68,7 @@ Notes:
 - Passwords are hashed before saving. Mongoose schema sets `password.select=false`, so responses omit it.
 - Ensure `process.env.JWT_SECRET` is set for token generation.
 
+---
 
 ## Login Endpoint
 
@@ -142,4 +143,46 @@ curl -X POST http://localhost:3000/api/user/login \
     "password": "secret123"
   }'
 ```
+
+---
+
+## GET /api/user/profile
+
+Purpose: Return the authenticated user's profile.
+
+Auth: Required. The route reads JWT from cookie `token` or `Authorization: Bearer <token>` header.
+
+Responses:
+- 200 OK: returns user object (no password).
+- 401 Unauthorized: missing/invalid/blacklisted token — { message: "Unauthorized" }
+- 500 Internal Server Error: unexpected error.
+
+Quick example (success):
+
+{
+  "_id": "64a1f0...",
+  "fullname": { 
+    "firstname": "Jane",
+     "lastname": "Smith" }
+     ,
+  "email": "jane@example.com",
+  "socketId": null
+}
+
+---
+
+## GET /api/user/logout
+
+Purpose: Log the user out by clearing the `token` cookie and blacklisting the token.
+
+Auth: Required.
+
+Responses:
+- 200 OK: { message: "Logged out successfully" }
+- 401 Unauthorized: missing/invalid/blacklisted token — { message: "Unauthorized" }
+- 500 Internal Server Error: unexpected error.
+
+Notes:
+- The logout route clears the `token` cookie and saves the token in a blacklist collection to prevent reuse until it expires.
+
 
