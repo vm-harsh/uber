@@ -229,5 +229,46 @@ Quick example (success):
   "socketId": null
 }
 
+---
+
+## GET /api/captain/profile
+
+Purpose: Return the authenticated captain's profile.
+
+Auth: Required. Uses cookie `token` or `Authorization: Bearer <token>` header and `captainAuth` middleware.
+
+Responses:
+- 200 OK: returns captain object (password omitted).
+- 401 Unauthorized: missing/invalid/blacklisted token — { "message": "Unauthorized" }
+- 500 Internal Server Error: unexpected error.
+
+Quick example (success):
+
+{
+  "_id": "64a1f0...",
+  "fullname": { "firstname": "Raj", "lastname": "K" },
+  "email": "raj@example.com",
+  "vehicle": { "color": "red", "plate": "ABC123", "capacity": 4, "vehicleType": "car" },
+  "socketId": null,
+  "status": "inactive"
+}
+
+---
+
+## GET /api/captain/logout
+
+Purpose: Log the captain out by blacklisting the token and clearing the `token` cookie.
+
+Auth: Required.
+
+Responses:
+- 200 OK: { "message": "Logged out successfully" }
+- 401 Unauthorized: missing/invalid/blacklisted token — { "message": "Unauthorized" }
+- 500 Internal Server Error: unexpected error.
+
+Notes:
+- The route saves the token to the blacklist collection (so it can't be reused) and clears the cookie.
+
+
 
 
