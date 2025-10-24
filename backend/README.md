@@ -185,4 +185,49 @@ Responses:
 Notes:
 - The logout route clears the `token` cookie and saves the token in a blacklist collection to prevent reuse until it expires.
 
+---
+
+## POST /api/captain/register
+
+Purpose: Register a captain (driver), set auth cookie `token`, and return the created captain (password excluded).
+
+Request JSON:
+
+{
+  "fullname": { "firstname": "string", "lastname": "string" },
+  "email": "string",
+  "password": "string",
+  "vehicle": {
+    "color": "string",
+    "plate": "string",
+    "capacity": number,
+    "vehicleType": "car|bike|auto"
+  }
+}
+
+Validation (route messages):
+- `fullname.firstname`: min 3 — "First name must be atleast 3 character long"
+- `email`: valid email — "Invalid Email"
+- `password`: min 6 — "Password must be atleast 6 character long"
+- `vehicle.color`: min 3 — "Vehicle color must be atleast 3 character long"
+- `vehicle.plate`: min 3 — "Vehicle plate must be atleast 3 character long"
+- `vehicle.capacity`: integer >=1 — "Vehicle capacity must be atleast 1"
+- `vehicle.vehicleType`: one of ["car","bike","auto"] — "Vehicle type must be car, bike or auto"
+
+Responses:
+- 201 Created: captain created, `Set-Cookie: token=<jwt>`; body: captain object (no password).
+- 400 Bad Request: validation errors OR email already exists — e.g. { message: [ ...errors ] } or { message: "Captain already Exist" }
+- 500 Internal Server Error: unexpected error.
+
+Quick example (success):
+
+{
+  "_id": "64a1f0...",
+  "fullname": { "firstname": "Raj", "lastname": "K" },
+  "email": "raj@example.com",
+  "vehicle": { "color": "red", "plate": "ABC123", "capacity": 4, "vehicleType": "car" },
+  "socketId": null
+}
+
+
 
