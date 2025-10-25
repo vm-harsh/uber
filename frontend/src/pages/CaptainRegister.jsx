@@ -4,12 +4,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const CaptainRegister = () => {
-  const [formData, setFormData] = useState({
-      firstname:'',
-      lastname:'',
-      email:'',
-      password:'',
-    })
+  const STORAGE_KEY = 'formdata';
+
+const [formData, setFormData] = useState(() => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  return saved ? JSON.parse(saved) : { firstname:'', lastname:'', email:'', password:'' };
+});
+
+    useEffect(()=>{
+      localStorage.setItem('formdata',JSON.stringify(formData));
+    },[formData])    
   
     const handleChange = (e) => {
       const {value,name} = e.target;
@@ -22,18 +26,7 @@ const CaptainRegister = () => {
       e.preventDefault();
       console.log(formData)
     }
-
-     useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('formData'));
-    if (saved) {
-      setFormData(saved);
-    }
-  }, []);
-
-    useEffect(()=>{
-      localStorage.setItem('formData',JSON.stringify(formData));
-    },[formData])
-
+    
   return (
     <div>
       <div className='w-full h-screen p-7 flex flex-col justify-between '>
