@@ -26,7 +26,7 @@ const [formData, setFormData] = useState(() => {
       e.preventDefault();
       console.log(formData)
     }
-    
+
   return (
     <div>
       <div className='w-full h-screen p-7 flex flex-col justify-between '>
@@ -54,7 +54,7 @@ const [formData, setFormData] = useState(() => {
         </form>
         <h2 className='text-xl text-center mt-3 cursor-pointer'>Already have an account? <Link to='/c-login' className='font-semibold'> Login </Link></h2>
         </div>
-        <Link to='/login' className='flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer'>Register As User</Link>
+        <Link to='/register' className='flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer'>Register As User</Link>
       </div>
     </div>
   )
