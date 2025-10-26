@@ -1,8 +1,16 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../context/UserProvider'
+import { useNavigate } from 'react-router-dom'
+import { CaptainContext } from '../context/CaptainProvider'
 
 const CaptainLogin = () => {
+  const navigate = useNavigate();
+  const [apiError , setApiError] = useState(null);
+  const {serverURL} = useContext(UserContext);
+  const {setCaptain} = useContext(CaptainContext);
   const [formData, setFormData] = useState({
       email:'',
       password:''
@@ -15,9 +23,24 @@ const CaptainLogin = () => {
       })
     }
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(formData)
+      try {
+        const response = await axios.post(`${serverURL}/api/captain/login`,{
+          email:formData.email,
+          password:formData.password
+        },{withCredentials:true})
+        if(response.status === 200){
+          setApiError(null);
+          setCaptain(response.data.captain);   
+          localStorage.setItem('token',response.data.token); 
+          navigate('/captain-home');
+        }
+      } catch (error) {
+        setApiError(error.response.data.message);
+        console.log('login error : ',error);
+      }
+      
     }
   return (
     <div>
@@ -29,6 +52,11 @@ const CaptainLogin = () => {
           <input name='email' type='email' className='bg-[#ededed] text-2xl mb-6 px-3 py-6 rounded-2xl w-full outline-orange-300' placeholder='email@example.com' value={formData.email} onChange={handleChange} required/> 
           <label className='font-bold text-3xl mb-3 '>Enter Password</label>
           <input name='password' type='password' className='bg-[#ededed] text-2xl mb-6 px-3 py-6 rounded-2xl w-full outline-orange-300' placeholder='password' value={formData.password} onChange={handleChange} required/>
+
+          {apiError && <h2 className='w-full text-center text-xl mb-2 text-red-600'>
+              {apiError}
+            </h2>}
+
           <button className=' flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer' >Login</button>
         </form>
         <h2 className='text-xl text-center mt-3 cursor-pointer'>Don't have an account? <Link to='/c-register' className='font-semibold'> Register </Link></h2>

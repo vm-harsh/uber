@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowBack } from "react-icons/io";
 import { useState } from 'react';
+import axios from 'axios';
+import { UserContext } from '../context/UserProvider';
+import { CaptainContext } from '../context/CaptainProvider';
 
 const VehicleDetails = () => {
   const navigate = useNavigate();
+  const {serverURL} = useContext(UserContext);
+  const {setCaptain} = useContext(CaptainContext);
+  const [apiError,setApiError] = useState(null);
   const [prevData,setPrevData] = useState(()=>{
     const saved = localStorage.getItem('formdata')
     if(saved){
@@ -26,11 +32,35 @@ const VehicleDetails = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const combinedData = {...prevData, ...formData};
     localStorage.removeItem('formdata');
-    console.log(combinedData);
+    try {
+      const response = await axios.post(`${serverURL}/api/captain/register`,{
+        fullname:{
+          firstname:combinedData.firstname,
+          lastname:combinedData.lastname
+        },
+        email:combinedData.email,
+        password:combinedData.password,
+        vehicle:{
+          color:combinedData.color,
+          plate:combinedData.plateNo,
+          capacity:combinedData.capacity,
+          vehicleType:combinedData.type.toLowerCase()
+        }
+      },{withCredentials:true});
+      if(response.status === 201){
+        setApiError(null);
+        setCaptain(response.data.captain);
+        localStorage.setItem('token',response.data.token);
+        navigate('/captain-home');
+      }
+    } catch (error) {
+      setApiError(error.response.data.message);
+      console.log('captain register error : ',error);
+    }
   }
   return (
     <div className='w-full h-screen p-7 flex flex-col gap-10'>
@@ -61,7 +91,10 @@ const VehicleDetails = () => {
             </select>
           </div> 
        </div>
-        <button className=' mt-5 flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer' >Register</button>
+        {apiError && <h2 className='w-full text-center text-xl mb-2 text-red-600'>
+              {apiError}
+            </h2>}
+        <button type='submit' className=' mt-5 flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer' onClick={handleSubmit} >Register</button>
       </form>
     </div>
   )

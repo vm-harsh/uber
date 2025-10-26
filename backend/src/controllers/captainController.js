@@ -7,9 +7,7 @@ const registerCaptain = async (req,res) => {
 
   const error = validationResult(req);
   if(!error.isEmpty()){
-    return res.status(400).json({
-      message:error.array()
-    })
+    return res.status(400).json({message:error.array()[0].msg})
   }
 
   const {fullname,email,password,vehicle} = req.body;
@@ -36,10 +34,10 @@ const registerCaptain = async (req,res) => {
     vehicleType:vehicle.vehicleType
   })
 
-  const token = captain.genereateAuthToken();
+  const token = captain.generateAuthToken();
   res.cookie('token',token);
 
-  return res.status(201).json(captain);
+  return res.status(201).json({captain,token});
 
 }
 
@@ -48,9 +46,7 @@ const registerCaptain = async (req,res) => {
 const loginCaptain = async (req,res) => {
   const error = validationResult(req);
   if(!error.isEmpty()){
-    return res.status(400).json({
-      message:error.array()
-    })
+    return res.status(400).json({message:error.array()[0].msg})
   }
 
   const {email,password} = req.body;
@@ -75,7 +71,7 @@ const loginCaptain = async (req,res) => {
 
   res.cookie('token',token);
 
-  return res.status(200).json(captain);
+  return res.status(200).json({captain,token});
 
 }
 
