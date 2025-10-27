@@ -1,14 +1,19 @@
 import React, { useRef, useState } from 'react'
 import { MdKeyboardArrowDown } from "react-icons/md";
+
 import {useGSAP} from '@gsap/react';
 import gsap from 'gsap';
 import LocationSearchPanel from '../components/LocationSearchPanel';
+import VehiclePanel from '../components/VehiclePanel';
+
 
 const Home = () => {
   const[pickUp,setPickUp] = useState('');
   const[destination,setDestination] = useState('');
   const[isPanelOpen,setIsPanelOpen] = useState(false);
+  const[isVehiclePanelOpen,setIsVehiclePanelOpen] = useState(false);
   const panelRef = useRef(null);
+  const vehiclePanelRef = useRef(null);
 
 
   useGSAP(()=>{
@@ -18,6 +23,19 @@ const Home = () => {
       ease: 'power2.out'
     })
   },[isPanelOpen])
+
+  useGSAP(()=>{
+   if(isVehiclePanelOpen){
+     gsap.to(vehiclePanelRef.current,{
+      transform: 'translateY(0)'
+    })
+   }
+   else{
+     gsap.to(vehiclePanelRef.current,{
+      transform: 'translateY(100%)'
+    })
+   }
+  },[isVehiclePanelOpen])
 
   return (
     <div>
@@ -38,7 +56,10 @@ const Home = () => {
           </form>
          </div>
          <div  ref={panelRef} className={`h-0 bg-white px-7`}>
-          <LocationSearchPanel/>
+          <LocationSearchPanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
+         </div>
+         <div className='fixed bottom-0 w-full bg-white px-5 py-12 translate-y-full rounded-2xl' ref={vehiclePanelRef}>
+          <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen}/>
          </div>
         </div>
       </div>
