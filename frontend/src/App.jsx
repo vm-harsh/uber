@@ -28,7 +28,6 @@ const App = () => {
       <Route path='/c-login' element={<CaptainLogin/>}  />
       <Route path='/c-register' element={<CaptainRegister/>}  />
       <Route path='/vehicle-details' element={<VehicleDetails/>}  />
-      <Route path='/riding' element={<Riding/>}/>
       <Route path ='/home' element={<UserProtectedWrapper>
         <Home/>
       </UserProtectedWrapper>}/>
@@ -41,6 +40,9 @@ const App = () => {
       <Route path='captain/logout' element={<CaptainProtectedWrapper>
         <CaptainLogout/>
       </CaptainProtectedWrapper>}/>
+      <Route path='/riding' element={<UserProtectedWrapper>
+        <Riding/>
+      </UserProtectedWrapper>}/>
     </Routes>
 
   )
