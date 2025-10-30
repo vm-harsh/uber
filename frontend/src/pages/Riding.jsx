@@ -1,18 +1,23 @@
 import React from 'react'
-import { BsChevronCompactDown } from 'react-icons/bs'
 import { HiOutlineCash } from 'react-icons/hi'
 import { IoLocation } from 'react-icons/io5'
 import uber_car from '../assets/uber_car.png';
+import { AiFillHome } from "react-icons/ai";
+import { Link } from 'react-router-dom';
+
 
 const Riding = () => {
   return (
     <div className='h-screen'>
+      <Link to={'/home'} className='fixed top-2 right-2 bg-gray-400  text-white text-2xl rounded-full p-3'>
+        <AiFillHome/>
+      </Link>
+
       <div className='h-1/2'>
         <img src='https://imgs.search.brave.com/PGPRil5Jz9rjEuBW1RmTIsQvLLXiS61EU_JCixHhyzw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvdHJhbnNwb3J0/LXNlcnZpY2UtYXBw/LXRlY2hub2xvZ3kt/aWNvbl8yNDkwOC0y/ODQyNC5qcGc_c2Vt/dD1haXNfaHlicmlk/Jnc9NzQwJnE9ODA' className='w-full h-full'/>
       </div>
       <div className='h-1/2 p-5 flex flex-col justify-between items-center'>
         <div>
-              <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsWaitingForDriverPanel(false)}/>
         
               <div className='flex items-center justify-between px-5'>
                 <img src={uber_car} className='w-22'/>
