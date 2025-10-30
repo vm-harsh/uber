@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BsChevronCompactDown } from 'react-icons/bs'
 import { HiOutlineCash } from 'react-icons/hi'
 import { IoLocation } from 'react-icons/io5'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const ConfirmRidePanelPopUp = ({setIsConfirmRidePopUpOpen}) => {
+  const navigate = useNavigate();
+  const[otp,setOtp] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("form submitted");
+  }
+
   return (
     <div>
               <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsConfirmRidePopUpOpen(false)}/>
@@ -45,16 +55,20 @@ const ConfirmRidePanelPopUp = ({setIsConfirmRidePopUpOpen}) => {
                       </div>
                     </div>
                   </div>
+                    <form className='w-full' onSubmit={handleSubmit}>
+                      <input type="number" value={otp}  className='w-full px-4 py-6 bg-gray-200 font-mono rounded-2xl text-2xl mb-4 font-semibold' placeholder='Enter OTP' onChange={(e) => setOtp(e.target.value)} />
                   <div className='w-full flex gap-3'>
-                    <button className=' flex items-center justify-center w-full py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
+                    <button type='submit' className=' flex items-center justify-center w-full py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
                     // setIsRidePopUpOpen(false)
+                    navigate('/captain-riding')
                   }}>Accept</button>
                   <button className=' flex items-center justify-center w-full py-6 bg-red-500 text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
                     setIsConfirmRidePopUpOpen(false)
                   }}>Cancel</button>
                   </div>
+                  </form>
                 </div>
-        </div>
+    </div>
   )
 }
 
