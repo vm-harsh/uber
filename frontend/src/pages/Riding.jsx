@@ -51,7 +51,7 @@ const Riding = () => {
                   </div>
                 </div>
             </div>
-            <button className=' flex items-center justify-center w-[90%] py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' >Confirm Payment</button>
+            <button className=' flex items-center justify-center w-[90%] py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' >Make a Payment</button>
       </div>
     </div>
   )
