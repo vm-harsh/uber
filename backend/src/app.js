@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const app = express();
 const userRoutes = require('./routes/userRoutes')
 const captainRoutes = require('./routes/captainRoutes')
+const mapRoutes = require('./routes/mapRoutes')
 
 app.use(cors({
   origin:"http://localhost:5173",
@@ -15,6 +16,7 @@ app.use(cookieParser())
 
 app.use('/api/user',userRoutes);
 app.use('/api/captain',captainRoutes);
+app.use('/api/map',mapRoutes);
 
 
 module.exports = app;
