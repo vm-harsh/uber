@@ -21,6 +21,27 @@ const getCoordinates = async (req, res) => {
   }
 };
 
+const getDistanceAndTimeController = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
 
+  const { origin, destination } = req.query;
 
-module.exports = {getCoordinates};
+  if (!origin || !destination) {
+    return res
+      .status(400)
+      .json({ message: "Both 'origin' and 'destination' query parameters are required" });
+  }
+
+  try {
+    const result = await getDistanceAndTime(origin, destination);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Distance/Time error:", error.message);
+    return res.status(500).json({ message: "Failed to calculate distance or time" });
+  }
+};
+
+module.exports = {getCoordinates,getDistanceAndTimeController};
