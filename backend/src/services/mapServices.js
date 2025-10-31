@@ -52,4 +52,39 @@ async function getDistanceAndTime(origin, destination) {
 }
 
 
-module.exports = { getAddressCoordinates, getDistanceAndTime };
+
+async function getAutoCompleteSuggestions(address) {
+  const LIQ_API_KEY = process.env.LOCATION_IQ_API_KEY;
+
+  if (!LIQ_API_KEY) {
+    throw new Error('LocationIQ API key not set in environment');
+  }
+
+  if (!address) {
+    throw new Error('Address is required');
+  }
+
+  const url = `https://api.locationiq.com/v1/autocomplete?key=${LIQ_API_KEY}&q=${encodeURIComponent(address)}&limit=5&dedupe=1`;
+
+  try {
+    const response = await axios.get(url);
+
+    
+    const suggestions = response.data.map((item) => ({
+      display_name: item.display_name,
+      lat: item.lat,
+      lon: item.lon,
+      type: item.type,
+    }));
+
+    return suggestions;
+  } catch (error) {
+    console.error('Autocomplete error:', error.response?.data || error.message);
+    throw new Error('Failed to fetch autocomplete suggestions');
+  }
+}
+
+module.exports = { getAutoCompleteSuggestions };
+
+
+module.exports = { getAddressCoordinates, getDistanceAndTime, getAutoCompleteSuggestions };

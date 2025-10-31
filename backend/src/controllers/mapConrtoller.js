@@ -1,5 +1,6 @@
 const { getAddressCoordinates, getDistanceAndTime } = require('../services/mapServices');
 const { validationResult } = require('express-validator');
+const { getAutoCompleteSuggestions } = require('../services/mapServices');
 
 const getCoordinates = async (req, res) => {
   const errors = validationResult(req);
@@ -44,4 +45,34 @@ const getDistanceAndTimeController = async (req, res) => {
   }
 };
 
-module.exports = {getCoordinates,getDistanceAndTimeController};
+
+
+
+const getAutoCompleteController = async (req, res) => {
+  
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  // 2️⃣ Extract address from body
+  const { address } = req.body;
+
+  if (!address || typeof address !== 'string') {
+    return res.status(400).json({ message: "Address field is required in request body" });
+  }
+
+  try {
+    // 3️⃣ Fetch suggestions from LocationIQ
+    const suggestions = await getAutoCompleteSuggestions(address);
+
+    // 4️⃣ Return suggestions
+    return res.status(200).json({ suggestions });
+  } catch (error) {
+    console.error('Autocomplete controller error:', error.message);
+    return res.status(500).json({ message: 'Failed to fetch autocomplete suggestions' });
+  }
+};
+
+
+module.exports = {getCoordinates,getDistanceAndTimeController,getAutoCompleteController};
