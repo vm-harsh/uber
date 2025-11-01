@@ -46,8 +46,8 @@ async function getDistanceAndTime(origin, destination) {
   return {
     origin,
     destination,
-    distance_km: (data.distance / 1000).toFixed(2),
-    duration_min: (data.duration / 60).toFixed(2),
+    distance: (data.distance / 1000).toFixed(2),
+    duration: (data.duration / 60).toFixed(2),
   };
 }
 

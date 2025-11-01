@@ -55,18 +55,16 @@ const getAutoCompleteController = async (req, res) => {
     return res.status(400).json({ message: errors.array() });
   }
 
-  // 2️⃣ Extract address from body
-  const { address } = req.body;
+  
+  const { address } = req.query;
 
   if (!address || typeof address !== 'string') {
     return res.status(400).json({ message: "Address field is required in request body" });
   }
 
   try {
-    // 3️⃣ Fetch suggestions from LocationIQ
     const suggestions = await getAutoCompleteSuggestions(address);
 
-    // 4️⃣ Return suggestions
     return res.status(200).json({ suggestions });
   } catch (error) {
     console.error('Autocomplete controller error:', error.message);

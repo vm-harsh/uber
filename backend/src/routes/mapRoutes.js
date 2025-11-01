@@ -2,7 +2,7 @@ const express = require('express')
 const {userAuth} = require('../middlewares/authMiddleware');
 const {getCoordinates,getDistanceAndTimeController, getAutoCompleteController} = require('../controllers/mapConrtoller');
 const router = express.Router()
-const {query,body} = require('express-validator');
+const {query} = require('express-validator');
 
 
 
@@ -20,7 +20,7 @@ router.get('/get-distance-time',
 router.post(
   '/get-address-suggestions',
   [
-    body('address')
+    query('address')
       .isString()
       .isLength({ min: 3 })
       .withMessage('Address must be at least 3 characters long'),
