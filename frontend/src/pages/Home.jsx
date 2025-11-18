@@ -8,16 +8,20 @@ import VehiclePanel from '../components/VehiclePanel';
 import ConfirmRide from '../components/ConfirmRide';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
+import axios from 'axios';
 
 
 const Home = () => {
   const[pickUp,setPickUp] = useState('');
   const[destination,setDestination] = useState('');
+  const[suggestions,setSuggestions] = useState([]);
+  const[activeField, setActiveField] = useState('');
   const[isPanelOpen,setIsPanelOpen] = useState(false);
   const[isVehiclePanelOpen,setIsVehiclePanelOpen] = useState(false);
   const[isConfirmRidePanelOpen,setIsConfirmRidePanelOpen] = useState(false);
   const[isVehicleFoundPanel,setIsVehicleFoundPanel] = useState(false);
   const[iswaitingForDriverPanel,setIsWaitingForDriverPanel] = useState(false);
+  const[err,setErr] = useState(false);
   const panelRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
@@ -84,6 +88,37 @@ const Home = () => {
     }
 },[iswaitingForDriverPanel])
 
+  const getSuggestions = async (address) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/api/map/get-address-suggestions`,
+      {},  // empty body (if needed)
+      {
+        params: { address },
+        withCredentials: true
+      }
+    );
+
+    setSuggestions(response.data.suggestions);
+    console.log(response.data);
+
+  } catch (err) {
+    console.log("Suggestion failed", err);
+  }
+};
+
+
+const findTrip = () => {
+  if(!pickUp || !destination){
+    setErr('Please select a valid location');
+    return;
+  }
+  setIsVehiclePanelOpen(true);
+  setIsPanelOpen(false);
+}
+
+
+
   return (
     <div>
       <div className='w-full h-screen relative'>
@@ -97,12 +132,18 @@ const Home = () => {
             <button className={`absolute right-5 text-2xl text-gray-800 ${isPanelOpen ? 'visible' : 'hidden'}`} onClick={()=>setIsPanelOpen(false)}><MdKeyboardArrowDown /></button>
             <h2 className='text-2xl mb-6 font-bold text-gray-800'>Find a trip</h2>
             <form>
-              <input className='px-8 py-6 bg-[#ededed] w-full text-xl rounded-xl mb-3 outline-yellow-500' value={pickUp} placeholder='Add a pickup location' onClick={()=>setIsPanelOpen(true)} onChange={(e)=>setPickUp(e.target.value)}/>
-              <input className='px-8 py-6 bg-[#ededed] w-full text-xl rounded-xl outline-yellow-500' value={destination} placeholder='Enter your destination' onClick={()=>setIsPanelOpen(true)} onChange={(e) => setDestination(e.target.value)}/>
+              <input className='px-8 py-6 bg-[#ededed] w-full text-xl rounded-xl mb-3 outline-yellow-500' value={pickUp} placeholder='Add a pickup location' onClick={()=>{setIsPanelOpen(true), setActiveField('pickUp')}} 
+              onChange={(e)=>{setPickUp(e.target.value) , getSuggestions(pickUp)}}/>
+              <input className='px-8 py-6 bg-[#ededed] w-full text-xl rounded-xl outline-yellow-500' value={destination} placeholder='Enter your destination' onClick={()=>{setIsPanelOpen(true), setActiveField('destination')}} 
+              onChange={(e) => {setDestination(e.target.value), getSuggestions(destination)}}/>
             </form>
+            {err && <p className='text-center text-red-400 text-lg mt-1'>{err}</p>}
+            <button className=' flex items-center justify-center w-full py-3 mt-3 bg-black text-white text-xl rounded-xl cursor-pointer' 
+              onClick={findTrip}
+            >Find trip</button>
             </div>
             <div  ref={panelRef} className={`h-0 bg-white px-7`}>
-              <LocationSearchPanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
+              <LocationSearchPanel activeField={activeField} setPickUp={setPickUp} setDestination={setDestination} setSuggestions={setSuggestions} Suggestions={suggestions} setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white px-5 py-12 translate-y-full rounded-2xl' ref={vehiclePanelRef}>
               <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen}/>

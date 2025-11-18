@@ -1,5 +1,6 @@
 const rideModel = require('../models/rideModel');
 const mapServices = require('./mapServices');
+const crypto = require('crypto');
 
 async function getFare(pickup, destination) {
   if (!pickup || !destination) {
@@ -8,24 +9,9 @@ async function getFare(pickup, destination) {
 
   const distanceTime = await mapServices.getDistanceAndTime(pickup, destination);
 
-  // Base rates for different vehicle types (per km)
-  const perKmRates = {
-    auto: 10,
-    car: 15,
-    bike: 8,
-  };
-
-  const perMinRates = {
-    car: 3,
-    bike: 1.5,
-  };
-
-  // Minimum fares
-  const minFares = {
-    auto: 30,
-    car: 50,
-    bike: 20,
-  };
+  const perKmRates = { auto: 10, car: 15, bike: 8 };
+  const perMinRates = { car: 3, bike: 1.5 };
+  const minFares = { auto: 30, car: 50, bike: 20 };
 
   const fares = {
     auto: Math.max(minFares.auto, distanceTime.distance * perKmRates.auto),
@@ -33,8 +19,16 @@ async function getFare(pickup, destination) {
     bike: Math.max(minFares.bike, (distanceTime.distance * perKmRates.bike) + (distanceTime.duration * perMinRates.bike))
   };
 
-  return fares;
+  // Round each value to 2 decimals
+  const formattedFares = {
+    auto: fares.auto.toFixed(2),
+    car: fares.car.toFixed(2),
+    bike: fares.bike.toFixed(2)
+  };
+
+  return formattedFares;
 }
+
 
 function getOTP(num){
   const otp = crypto.randomInt(Math.pow(10,num-1),Math.pow(10,num)).toString();
