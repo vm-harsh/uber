@@ -21,6 +21,7 @@ const Home = () => {
   const[isConfirmRidePanelOpen,setIsConfirmRidePanelOpen] = useState(false);
   const[isVehicleFoundPanel,setIsVehicleFoundPanel] = useState(false);
   const[iswaitingForDriverPanel,setIsWaitingForDriverPanel] = useState(false);
+  const[fairs,setFairs] = useState(null);
   const[err,setErr] = useState(false);
   const panelRef = useRef(null);
   const vehiclePanelRef = useRef(null);
@@ -115,6 +116,27 @@ const findTrip = () => {
   }
   setIsVehiclePanelOpen(true);
   setIsPanelOpen(false);
+
+    const getFair = async () => {
+      try {
+      const response = await axios.post(
+    "http://localhost:3000/api/ride/get-fare",
+    {pickUp,destination},
+    {
+      withCredentials: true,
+    }
+  );
+  
+      if(response.status === 200){
+        setFairs(response.data);
+      }
+      } catch (error) {
+        console.log("error : ", error);
+      }
+    }
+
+    getFair(pickUp,destination);
+
 }
 
 
@@ -147,7 +169,7 @@ const findTrip = () => {
               <LocationSearchPanel activeField={activeField} setPickUp={setPickUp} setDestination={setDestination} setSuggestions={setSuggestions} Suggestions={suggestions} setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white px-5 py-12 translate-y-full rounded-2xl' ref={vehiclePanelRef}>
-              <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} isVehiclePanelOpen={isVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} pickUp={pickUp} destination={destination}  />
+              <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} fairs={fairs}  />
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl' ref={confirmRidePanelRef}>
               <ConfirmRide setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
