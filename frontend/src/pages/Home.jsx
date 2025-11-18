@@ -119,6 +119,7 @@ const findTrip = () => {
 
 
 
+
   return (
     <div>
       <div className='w-full h-screen relative'>
@@ -146,7 +147,7 @@ const findTrip = () => {
               <LocationSearchPanel activeField={activeField} setPickUp={setPickUp} setDestination={setDestination} setSuggestions={setSuggestions} Suggestions={suggestions} setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white px-5 py-12 translate-y-full rounded-2xl' ref={vehiclePanelRef}>
-              <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen}/>
+              <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} isVehiclePanelOpen={isVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} pickUp={pickUp} destination={destination}  />
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl' ref={confirmRidePanelRef}>
               <ConfirmRide setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>

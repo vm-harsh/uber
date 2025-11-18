@@ -29,6 +29,8 @@ async function getFare(pickup, destination) {
   return formattedFares;
 }
 
+module.exports = getFare;
+
 
 function getOTP(num){
   const otp = crypto.randomInt(Math.pow(10,num-1),Math.pow(10,num)).toString();

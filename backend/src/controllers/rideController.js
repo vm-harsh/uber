@@ -1,3 +1,4 @@
+const getFare = require('../services/rideService');
 const rideServices = require('../services/rideService');
 const {validationResult} = require('express-validator');
 
@@ -22,5 +23,22 @@ module.exports.createRideController = async (req,res) => {
 
 }
 
+
+module.exports.getFareController = async (req,res) => {
+  try {
+    const {pickUp,destination} = req.body;
+    if(!pickUp || !destination){
+      return res.status(404).json({message:"Invalid Locations"});
+    }
+    const fares = await getFare(pickUp,destination);
+    
+    res.status(200).json(fares);
+    
+  } catch (error) {
+    res.status(500).json({
+      message:"Internal Server Error"+error
+    })
+  }
+}
 
 

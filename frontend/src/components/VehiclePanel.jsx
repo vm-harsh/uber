@@ -2,8 +2,36 @@ import React from 'react'
 import { BsChevronCompactDown } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import ubercar from '../assets/uber_car.png';
+import axios from 'axios';
+import { useEffect } from 'react';
 
-const VehiclePanel = ({setIsVehiclePanelOpen,setIsConfirmRidePanelOpen}) => {
+const VehiclePanel = ({setIsVehiclePanelOpen,isVehiclePanelOpen,setIsConfirmRidePanelOpen,pickUp, destination}) => {
+
+    const getFair = async () => {
+    try {
+    const response = await axios.post(
+  "http://localhost:3000/api/ride/get-fare",
+  {pickUp,destination},
+  {
+    withCredentials: true,
+  }
+);
+
+    if(response.status === 200){
+      console.log(response.data);
+    }
+    } catch (error) {
+      console.log("error : ", error);
+    }
+  }
+  
+  useEffect(()=>{
+    if(isVehiclePanelOpen){
+      getFair();
+    }
+  },[isVehiclePanelOpen]);
+
+
   return (
     <div className='flex flex-col gap-2'>
       <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsVehiclePanelOpen(false)}/>
