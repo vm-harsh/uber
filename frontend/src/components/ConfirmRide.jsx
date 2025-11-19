@@ -5,7 +5,7 @@ import { IoLocation } from 'react-icons/io5';
 import { HiOutlineCash } from "react-icons/hi";
 
 
-const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel}) => {
+const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRide}) => {
   return (
     <div>
       <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsConfirmRidePanelOpen(false)}/>
@@ -41,6 +41,7 @@ const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel}) => {
             </div>
           </div>
           <button className=' flex items-center justify-center w-[90%] py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
+            createRide(),
             setIsVehicleFoundPanel(true),
             setIsConfirmRidePanelOpen(false)
           }}>Confirm Ride</button>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 import {useGSAP} from '@gsap/react';
@@ -9,9 +9,11 @@ import ConfirmRide from '../components/ConfirmRide';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
+import { UserContext } from '../context/UserProvider';
 
 
 const Home = () => {
+  const {serverURL} = useContext(UserContext);
   const[pickUp,setPickUp] = useState('');
   const[destination,setDestination] = useState('');
   const[suggestions,setSuggestions] = useState([]);
@@ -21,6 +23,7 @@ const Home = () => {
   const[isConfirmRidePanelOpen,setIsConfirmRidePanelOpen] = useState(false);
   const[isVehicleFoundPanel,setIsVehicleFoundPanel] = useState(false);
   const[iswaitingForDriverPanel,setIsWaitingForDriverPanel] = useState(false);
+  const[vehicleType,setVehicleType] = useState('');
   const[fairs,setFairs] = useState(null);
   const[err,setErr] = useState(false);
   const panelRef = useRef(null);
@@ -132,18 +135,28 @@ const findTrip = () => {
     }
   }
 
-  const allFair = getFair(pickUp,destination);
-  if(!allFair.car || !allFair.bike|| !allFair.auto){
-    setErr('Please Select Different Locations');
-    return;
-  }  
-
-  
+  getFair(pickUp,destination);
   
   setIsVehiclePanelOpen(true);
   setIsPanelOpen(false);
     
 
+}
+
+const createRide = async () => {
+  try {
+    const response = await axios.post(`${serverURL}/api/ride/create`,{
+      pickup:pickUp,
+      destination:destination,
+      vehicleType:vehicleType
+    },{withCredentials:true});
+
+    if(response.status === 201){
+      console.log(response.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
@@ -176,10 +189,10 @@ const findTrip = () => {
               <LocationSearchPanel activeField={activeField} setPickUp={setPickUp} setDestination={setDestination} setSuggestions={setSuggestions} Suggestions={suggestions} setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsPanelOpen={setIsPanelOpen}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white px-5 py-12 translate-y-full rounded-2xl' ref={vehiclePanelRef}>
-              <VehiclePanel setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} fairs={fairs}  />
+              <VehiclePanel setVehicleType={setVehicleType} setIsVehiclePanelOpen={setIsVehiclePanelOpen} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} fairs={fairs}  />
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl' ref={confirmRidePanelRef}>
-              <ConfirmRide setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
+              <ConfirmRide createRide={createRide} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl' ref={vehicelFoundRef}>
               <LookingForDriver setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
