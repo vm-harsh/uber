@@ -5,7 +5,7 @@ import { IoLocation } from 'react-icons/io5';
 import { HiOutlineCash } from "react-icons/hi";
 
 
-const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRide}) => {
+const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRide,pickUp,destination,fair}) => {
   return (
     <div>
       <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsConfirmRidePanelOpen(false)}/>
@@ -17,8 +17,8 @@ const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRid
                 <IoLocation className='text-2xl '/>
               </div>
               <div className='flex flex-col gap-2 border-b-2 border-gray-300 py-4 w-full'>
-                <h2 className='text-2xl font-bold'>562/11-A</h2>
-                <p className='text-xl text-gray-500 font-medium pr-5'>Kaikondrahilli, Bengaluru, Karnataka</p>
+                <h2 className='text-2xl font-bold'>PickUp</h2>
+                <p className='text-xl text-gray-500 font-medium pr-5'>{pickUp}</p>
               </div>
             </div>
             <div className='flex gap-5 items-center mb-4'>
@@ -26,8 +26,8 @@ const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRid
                 <IoLocation className='text-2xl '/>
               </div>
               <div className='flex flex-col gap-2 border-b-2 border-gray-300 py-4 w-full'>
-                <h2 className='text-2xl font-bold'>Third Wave Coffee</h2>
-                <p className='text-xl text-gray-500 font-medium pr-5'>17th Cross Rd, PWD Quarters, 1st Sector,HSR Layout, Bengaluru, Karnataka</p>
+                <h2 className='text-2xl font-bold'>Destination</h2>
+                <p className='text-xl text-gray-500 font-medium pr-5'>{destination}</p>
               </div>
             </div>
             <div className='flex gap-5 items-center mb-4'>
@@ -35,7 +35,7 @@ const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRid
                 <HiOutlineCash className='text-2xl '/>
               </div>
               <div className='flex flex-col gap-2  py-4 w-full'>
-                <h2 className='text-2xl font-bold'>₹193.20</h2>
+                <h2 className='text-2xl font-bold'>₹{fair}</h2>
                 <p className='text-xl text-gray-500 font-medium pr-5'>Cash</p>
               </div>
             </div>
