@@ -114,28 +114,35 @@ const findTrip = () => {
     setErr('Please select a valid location');
     return;
   }
-  setIsVehiclePanelOpen(true);
-  setIsPanelOpen(false);
-
-    const getFair = async () => {
-      try {
+  const getFair = async () => {
+    try {
       const response = await axios.post(
-    "http://localhost:3000/api/ride/get-fare",
-    {pickUp,destination},
-    {
-      withCredentials: true,
-    }
-  );
-  
+        "http://localhost:3000/api/ride/get-fare",
+        {pickUp,destination},
+        {
+          withCredentials: true,
+        }
+      );
+      
       if(response.status === 200){
         setFairs(response.data);
       }
-      } catch (error) {
-        console.log("error : ", error);
-      }
+    } catch (error) {
+      console.log("error : ", error);
     }
+  }
 
-    getFair(pickUp,destination);
+  const allFair = getFair(pickUp,destination);
+  if(!allFair.car || !allFair.bike|| !allFair.auto){
+    setErr('Please Select Different Locations');
+    return;
+  }  
+
+  
+  
+  setIsVehiclePanelOpen(true);
+  setIsPanelOpen(false);
+    
 
 }
 
