@@ -76,7 +76,7 @@ const loginCaptain = async (req,res) => {
 }
 
 const captainProfile = async (req,res) => {
-  return res.status(200).json(req.captain);
+  return res.status(200).json({captain:req.captain});
 }
 
 const logoutCaptain = async (req,res) => {

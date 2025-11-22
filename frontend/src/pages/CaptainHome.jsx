@@ -45,12 +45,12 @@ const CaptainHome = () => {
       <div className="p-5">
         <CaptainDetails/>
       </div>
-      <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl p-5' ref={isRidePopUpRef}>
+      {/* <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl p-5' ref={isRidePopUpRef}>
         <RidePopUp setIsRidePopUpOpen={setIsRidePopUpOpen} setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen} />
-      </div>
-      <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full h-screen rounded-2xl p-5' ref={isConfirmRidePopUpRef}>
+      </div> */}
+      {/* <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full h-screen rounded-2xl p-5' ref={isConfirmRidePopUpRef}>
         <ConfirmRidePanelPopUp setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen} />
-      </div>
+      </div> */}
 
 
     </div>

@@ -195,7 +195,7 @@ const createRide = async () => {
               <ConfirmRide fair={vehicleType && fairs && fairs[vehicleType]} pickUp={pickUp} destination={destination} createRide={createRide} setIsConfirmRidePanelOpen={setIsConfirmRidePanelOpen} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl' ref={vehicelFoundRef}>
-              <LookingForDriver setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
+              <LookingForDriver fair={vehicleType && fairs && fairs[vehicleType]} pickUp={pickUp} destination={destination} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 rounded-2xl' ref={waitingForDriverRef}>
               <WaitingForDriver setIsWaitingForDriverPanel={setIsWaitingForDriverPanel}/>

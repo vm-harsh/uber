@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/UserProvider'
@@ -33,6 +33,7 @@ const CaptainLogin = () => {
         if(response.status === 200){
           setApiError(null);
           setCaptain(response.data.captain);   
+          localStorage.setItem('captain',JSON.stringify(response.data.captain));
           localStorage.setItem('token',response.data.token); 
           navigate('/captain-home');
         }
@@ -42,6 +43,8 @@ const CaptainLogin = () => {
       }
       
     }
+
+    
   return (
     <div>
       <div className='w-full h-screen p-7 flex flex-col justify-between '>

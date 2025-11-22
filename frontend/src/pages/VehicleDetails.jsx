@@ -85,9 +85,9 @@ const VehicleDetails = () => {
             <div className='w-full flex flex-col gap-3'>
             <label className='font-semibold text-2xl'>Type</label>
             <select name='type' value={formData.type} className='bg-[#ededed] text-2xl mb-6 px-3 py-6 rounded-2xl w-full outline-orange-300'onChange={handleChange} > 
-              <option>Bike</option>
-              <option>Car</option>
-              <option>Auto</option>
+              <option>bike</option>
+              <option>car</option>
+              <option>auto</option>
             </select>
           </div> 
        </div>

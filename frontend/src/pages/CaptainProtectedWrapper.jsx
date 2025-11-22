@@ -15,8 +15,9 @@ const CaptainProtectedWrapper = ({children}) => {
   useEffect(()=>{
     if(!token){
       navigate('/c-login');
+      return;
     }
-  },[token])
+
 
     axios.get(`${serverURL}/api/captain/profile`,{
     headers:{
@@ -32,6 +33,7 @@ const CaptainProtectedWrapper = ({children}) => {
     localStorage.removeItem('token');
     navigate('/c-login');
   })
+},[token])
 
   if(isLoading){
     return <div>Loading...</div>

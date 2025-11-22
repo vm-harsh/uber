@@ -7,13 +7,14 @@ import UserProvider from './context/UserProvider.jsx'
 import CaptainProvider from './context/CaptainProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
+<StrictMode>
   <CaptainProvider>
     <UserProvider>
-    <BrowserRouter>
-      <StrictMode>
+      <BrowserRouter>
         <App />
-      </StrictMode>
-    </BrowserRouter>
-  </UserProvider>
+      </BrowserRouter>
+    </UserProvider>
   </CaptainProvider>
+</StrictMode>
+
 )
