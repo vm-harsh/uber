@@ -10,10 +10,11 @@ import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
 import { UserContext } from '../context/UserProvider';
-
+import { SocketContext } from '../context/SocketProvider';
+import { useEffect } from 'react';
 
 const Home = () => {
-  const {serverURL} = useContext(UserContext);
+  const {serverURL,user} = useContext(UserContext);
   const[pickUp,setPickUp] = useState('');
   const[destination,setDestination] = useState('');
   const[suggestions,setSuggestions] = useState([]);
@@ -26,11 +27,33 @@ const Home = () => {
   const[vehicleType,setVehicleType] = useState('');
   const[fairs,setFairs] = useState(null);
   const[err,setErr] = useState(false);
+  const[activeRide,setActiveRide] = useState(null);
   const panelRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
   const vehicelFoundRef = useRef(null);
   const waitingForDriverRef = useRef(null);
+  const {sendMessageToEvent, receiveMessageFromEvent} = useContext(SocketContext);
+
+  useEffect(()=>{
+    if (!user?._id) {
+      return;
+    }
+
+    sendMessageToEvent('join',{userId:user._id, userType:'user'});
+  },[user, sendMessageToEvent])
+
+  useEffect(() => {
+    const unsubscribe = receiveMessageFromEvent('ride-confirmed', (rideData) => {
+      setActiveRide(rideData);
+      setIsVehicleFoundPanel(false);
+      setIsWaitingForDriverPanel(true);
+    });
+
+    return unsubscribe;
+  }, [receiveMessageFromEvent]);
+
+  
 
   useGSAP(()=>{
     gsap.to(panelRef.current,{
@@ -198,7 +221,7 @@ const createRide = async () => {
               <LookingForDriver fair={vehicleType && fairs && fairs[vehicleType]} pickUp={pickUp} destination={destination} setIsVehicleFoundPanel={setIsVehicleFoundPanel}/>
             </div>
             <div className='fixed bottom-0 w-full bg-white py-12 rounded-2xl' ref={waitingForDriverRef}>
-              <WaitingForDriver setIsWaitingForDriverPanel={setIsWaitingForDriverPanel}/>
+              <WaitingForDriver ride={activeRide} setIsWaitingForDriverPanel={setIsWaitingForDriverPanel}/>
             </div>
         </div>
       </div>

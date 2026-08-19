@@ -5,14 +5,17 @@ import App from './App.jsx'
 import {BrowserRouter} from 'react-router-dom'
 import UserProvider from './context/UserProvider.jsx'
 import CaptainProvider from './context/CaptainProvider.jsx'
+import SocketProvider from './context/SocketProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
 <StrictMode>
   <CaptainProvider>
     <UserProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <SocketProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SocketProvider>
     </UserProvider>
   </CaptainProvider>
 </StrictMode>

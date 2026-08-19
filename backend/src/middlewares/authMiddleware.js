@@ -4,7 +4,7 @@ const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken')
 
 const userAuth = async (req,res,next) => {
-  const token = req.cookies.token ||  req.headers.authorization.split(' ')[ 1 ];
+  const token = req.cookies.token ||  req.headers.authorization?.split(' ')[ 1 ];
   if(!token){
     return res.status(401).json({
       message:"Unauthorized"
@@ -34,7 +34,7 @@ const userAuth = async (req,res,next) => {
 }
 
 const captainAuth = async (req,res,next) => {
-  const token = req.cookies.token ||  req.headers.authorization.split(' ')[ 1 ];
+  const token = req.cookies.token ||  req.headers.authorization?.split(' ')[ 1 ];
   if(!token){
     return res.status(401).json({
       message:"Unauthorized"

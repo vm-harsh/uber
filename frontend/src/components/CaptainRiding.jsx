@@ -39,7 +39,7 @@ const CaptainRiding = () => {
         <div className='flex justify-between w-full p-5 items-center mt-10'>
           <h4 className='text-3xl font-sans font-bold'>4KM</h4>
           <Link to={'/captain-home'} className=' flex items-center justify-center w-[45] p-4 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer '>
-            Complete Ride
+            Finish Ride
           </Link>
         </div>
       </div>

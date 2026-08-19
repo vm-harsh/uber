@@ -65,6 +65,7 @@ const loginUser = async (req,res) => {
   const token = user.generateAuthToken();
   res.cookie('token',token);
 
+  console.log(user)
   res.status(200).json({user,token});
 }
 

@@ -8,7 +8,7 @@ const mapRoutes = require('./routes/mapRoutes')
 const rideRoutes = require('./routes/rideRoutes')
 
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:["http://localhost:5173","https://3n5mjlzh-5173.inc1.devtunnels.ms"],
   credentials:true
 }))
 app.use(express.json());

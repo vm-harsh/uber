@@ -3,19 +3,105 @@ import { LuLogOut } from "react-icons/lu";
 import { Link } from 'react-router-dom'
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopUp from "../components/RidePopUp";
-import { use, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePanelPopUp from "../components/ConfirmRidePanelPopUp";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { SocketContext } from "../context/SocketProvider";
+import { CaptainContext } from "../context/CaptainProvider";
+import { UserContext } from "../context/UserProvider";
+import axios from "axios";
 
 
 const CaptainHome = () => {
 
 
-  const[isRidePopUpOpen,setIsRidePopUpOpen] = useState(true);
+  const[isRidePopUpOpen,setIsRidePopUpOpen] = useState(false);
   const[isConfirmRidePopUpOpen,setIsConfirmRidePopUpOpen] = useState(false);
   const isRidePopUpRef = useRef(null)
   const isConfirmRidePopUpRef = useRef(null)  
+  const {sendMessageToEvent, receiveMessageFromEvent} = useContext(SocketContext);
+  const {captain} = useContext(CaptainContext);
+  const [ride, setRide] = useState(null);
+  const {serverURL} = useContext(UserContext);
+
+
+
+
+  useEffect(()=>{
+      if (!captain?._id) return;
+
+      sendMessageToEvent('join',{userId:captain._id, userType:'captain'});
+
+      const sendCaptainLocation = () => {
+        navigator.geolocation?.getCurrentPosition(({ coords }) => {
+          sendMessageToEvent('update-location-captain', {
+            userId: captain._id,
+            location: {
+              lat: coords.latitude,
+              lng: coords.longitude,
+            },
+          });
+        });
+      };
+
+      sendCaptainLocation();
+      // const locationInterval = setInterval(sendCaptainLocation, 10000);
+
+      // return () => clearInterval(locationInterval);
+    },[captain, sendMessageToEvent]);
+
+  useEffect(() => {
+    const unsubscribe = receiveMessageFromEvent('new-ride', (data) => {
+      setRide(data);
+      setIsRidePopUpOpen(true);
+    });
+
+    return unsubscribe;
+  }, [receiveMessageFromEvent]);
+
+
+    async function confirmRide() {
+      try {
+        const response = await axios.post(`${serverURL}/api/ride/confirm`, {
+          rideId: ride._id,
+        }, {
+          withCredentials: true,
+        });
+
+        if (response.status !== 200) {
+          throw new Error('Failed to confirm ride');
+        }
+
+        console.log('Ride confirmed:', response.data);
+        setRide(response.data);
+        setIsRidePopUpOpen(false);
+        setIsConfirmRidePopUpOpen(true);
+      } catch (error) {
+        console.error('Error confirming ride:', error);
+      }
+    }
+
+    async function startRide(otp) {
+      if (!ride?._id) {
+        throw new Error('Ride not found');
+      }
+
+      const response = await axios.post(`${serverURL}/api/ride/start-ride`, {
+        rideId: ride._id,
+        otp,
+      }, {
+        withCredentials: true,
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Failed to start ride');
+      }
+
+      return response.data;
+    }
 
 
   useGSAP(()=>{
@@ -46,10 +132,15 @@ const CaptainHome = () => {
         <CaptainDetails/>
       </div>
       <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full rounded-2xl p-5' ref={isRidePopUpRef}>
-        <RidePopUp setIsRidePopUpOpen={setIsRidePopUpOpen} setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen} />
+        <RidePopUp 
+        ride={ride}
+        setIsRidePopUpOpen={setIsRidePopUpOpen}
+        setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen}
+        confirmRide={confirmRide}
+         />
       </div>
       <div className='fixed bottom-0 w-full bg-white py-12 translate-y-full h-screen rounded-2xl p-5' ref={isConfirmRidePopUpRef}>
-        <ConfirmRidePanelPopUp setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen} />
+        <ConfirmRidePanelPopUp ride={ride} startRide={startRide} setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen} />
       </div>
 
 

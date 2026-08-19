@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useContext } from 'react'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { UserContext } from '../context/UserProvider'
+import { UserContext } from '../context/UserProvider.jsx'
 import { useNavigate } from 'react-router-dom'
 
 const UserLogin = () => {

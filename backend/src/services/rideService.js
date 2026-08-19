@@ -53,3 +53,56 @@ module.exports.createRide = async({user,pickup,destination,vehicleType}) => {
 
   return ride;
 } 
+
+module.exports.confirmRide = async({rideId, captain}) => {
+  if(!rideId){
+    throw new Error('rideId is required');
+  }
+
+  await rideModel.findOneAndUpdate({_id:rideId},{status:'accepted',captain: captain._id});
+
+  const ride = await rideModel
+    .findById(rideId)
+    .populate('user')
+    .populate('captain');
+
+  if(!ride){
+    throw new Error('Ride not found');
+  }
+
+  return ride;
+}
+
+module.exports.startRide = async ({ rideId, captain, otp }) => {
+  if (!rideId || !otp) {
+    throw new Error('rideId and otp are required');
+  }
+
+  const ride = await rideModel.findById(rideId).select('+otp');
+
+  if (!ride) {
+    throw new Error('Ride not found');
+  }
+
+  if (!ride.captain || ride.captain.toString() !== captain._id.toString()) {
+    throw new Error('You are not assigned to this ride');
+  }
+
+  if (ride.status !== 'accepted') {
+    throw new Error('Ride is not ready to start');
+  }
+
+  if (ride.otp !== otp) {
+    throw new Error('Invalid OTP');
+  }
+
+  ride.status = 'ongoing';
+  await ride.save();
+
+  const updatedRide = await rideModel
+    .findById(rideId)
+    .populate('user')
+    .populate('captain');
+
+  return updatedRide;
+};
