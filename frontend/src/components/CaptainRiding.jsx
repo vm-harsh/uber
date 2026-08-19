@@ -8,17 +8,49 @@ import { Link } from 'react-router-dom'
 import FinishRide from './FinishRide'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
+import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import { SocketContext } from '../context/SocketProvider';
+import { CaptainContext } from '../context/CaptainProvider';
 
 const CaptainRiding = () => {
 
   const[finishRidePanel,setFinishRidePanel] = useState(false);
   const finishRidePanelRef = useRef(null);
+  const { sendMessageToEvent } = useContext(SocketContext);
+  const { captain } = useContext(CaptainContext);
+  const location = useLocation();
+  const activeRide = location.state?.ride;
 
   useGSAP(()=>{
     gsap.to(finishRidePanelRef.current,{
       transform: finishRidePanel ? 'translateY(0)' : 'translateY(100%)'
     })
   },[finishRidePanel])
+
+  React.useEffect(() => {
+    if (!captain?._id || !activeRide?._id) {
+      return undefined;
+    }
+
+    const publishLocation = () => {
+      navigator.geolocation?.getCurrentPosition(({ coords }) => {
+        sendMessageToEvent('update-location-captain', {
+          userId: captain._id,
+          rideId: activeRide._id,
+          location: {
+            lat: coords.latitude,
+            lng: coords.longitude,
+          },
+        });
+      });
+    };
+
+    publishLocation();
+    const intervalId = setInterval(publishLocation, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [captain, activeRide, sendMessageToEvent]);
 
   return (
     <div className='h-screen'>

@@ -4,7 +4,7 @@ import { HiOutlineCash } from 'react-icons/hi'
 import { IoLocation } from 'react-icons/io5'
 import uber_car from '../assets/uber_car.png';
 
-const RidePopUp = ({setIsRidePopUpOpen,setIsConfirmRidePopUpOpen,ride,confirmRide}) => {
+const RidePopUp = ({setIsRidePopUpOpen,ride,confirmRide}) => {
   return (
     <div>
           <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsRidePopUpOpen(false)}/>
@@ -47,11 +47,7 @@ const RidePopUp = ({setIsRidePopUpOpen,setIsConfirmRidePopUpOpen,ride,confirmRid
                 </div>
               </div>
               <div className='w-full flex gap-3'>
-                <button className=' flex items-center justify-center w-full py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
-                setIsRidePopUpOpen(false)
-                setIsConfirmRidePopUpOpen(true)
-                  confirmRide()
-              }}>Accept</button>
+                <button className=' flex items-center justify-center w-full py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={confirmRide}>Accept</button>
               <button className=' flex items-center justify-center w-full py-6 bg-gray-600 text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
                 setIsRidePopUpOpen(false)
               }}>Ignore</button>

@@ -14,8 +14,12 @@ const ConfirmRidePanelPopUp = ({ride, startRide, setIsConfirmRidePopUpOpen}) => 
     setOtpError('');
 
     try {
-      await startRide(otp);
-      navigate('/captain-riding');
+      const startedRide = await startRide(otp);
+      navigate('/captain-riding', {
+        state: {
+          ride: startedRide,
+        },
+      });
     } catch (error) {
       const message = error?.response?.data?.message || error?.message || 'Invalid OTP';
       setOtpError(message);

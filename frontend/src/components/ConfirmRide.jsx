@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BsChevronCompactDown } from 'react-icons/bs'
 import uber_car from '../assets/uber_car.png';
 import { IoLocation } from 'react-icons/io5';
@@ -6,6 +6,30 @@ import { HiOutlineCash } from "react-icons/hi";
 
 
 const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRide,pickUp,destination,fair}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleConfirmRide = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const isCreated = await createRide();
+
+    if (!isCreated) {
+      setSubmitError('Unable to create ride. Please try again.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    setIsVehicleFoundPanel(true);
+    setIsConfirmRidePanelOpen(false);
+    setIsSubmitting(false);
+  };
+
   return (
     <div>
       <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsConfirmRidePanelOpen(false)}/>
@@ -40,11 +64,8 @@ const ConfirmRide = ({setIsConfirmRidePanelOpen,setIsVehicleFoundPanel,createRid
               </div>
             </div>
           </div>
-          <button className=' flex items-center justify-center w-[90%] py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer' onClick={()=>{
-            createRide(),
-            setIsVehicleFoundPanel(true),
-            setIsConfirmRidePanelOpen(false)
-          }}>Confirm Ride</button>
+          {submitError && <p className='text-red-500 text-lg mb-3'>{submitError}</p>}
+          <button className=' flex items-center justify-center w-[90%] py-6 bg-[#54ac58] text-white text-2xl rounded-xl cursor-pointer disabled:opacity-60' disabled={isSubmitting} onClick={handleConfirmRide}>{isSubmitting ? 'Confirming...' : 'Confirm Ride'}</button>
         </div>
     </div>
   )

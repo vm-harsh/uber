@@ -2,11 +2,14 @@ import React from 'react'
 import { BsChevronCompactDown } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import ubercar from '../assets/uber_car.png';
-import axios from 'axios';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 const VehiclePanel = ({setIsVehiclePanelOpen,setIsConfirmRidePanelOpen,fairs,setVehicleType}) => {
+
+  const openConfirmRidePanel = (type) => {
+    setVehicleType(type);
+    setIsVehiclePanelOpen(false);
+    setIsConfirmRidePanelOpen(true);
+  };
 
 
 
@@ -15,7 +18,7 @@ const VehiclePanel = ({setIsVehiclePanelOpen,setIsConfirmRidePanelOpen,fairs,set
     <div className='flex flex-col gap-2'>
       <BsChevronCompactDown  className='absolute left-[50%] -translate-x-[50%] top-3 text-4xl text-gray-400' onClick={()=>setIsVehiclePanelOpen(false)}/>
           <h2 className='text-3xl font-bold mb-4'>Choose a Vehicle</h2>
-          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>{setIsConfirmRidePanelOpen(true),setVehicleType(()=>'car')}}>
+          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>openConfirmRidePanel('car')}>
             <img className='h-15' src={ubercar}/>
             <div className='flex flex-col w-1/2 '>
               <h4 className='flex text-xl gap-2 items-center font-semibold'>UberGo <span className='flex gap-0.5 items-center font-normal'><FaUser />4</span></h4>
@@ -24,7 +27,7 @@ const VehiclePanel = ({setIsVehiclePanelOpen,setIsConfirmRidePanelOpen,fairs,set
             </div>
             <h2 className='text-2xl font-bold'>₹{fairs?.car}</h2>
           </div>
-          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>{setIsConfirmRidePanelOpen(true),setVehicleType(()=>'bike')}}>
+          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>openConfirmRidePanel('bike')}>
             <img className='h-15' src='https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=576/height=384/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy9hMjU1M2ExOC0yZjc3LTQ3MjItYTRiYS1mNzM2ZjRjYjQwNWUucG5n'/>
             <div className='flex flex-col w-1/2  -ml-11'>
               <h4 className='flex text-xl gap-2 items-center font-semibold'>Moto <span className='flex gap-0.5 items-center font-normal'><FaUser />1</span></h4>
@@ -33,7 +36,7 @@ const VehiclePanel = ({setIsVehiclePanelOpen,setIsConfirmRidePanelOpen,fairs,set
             </div>
             <h2 className='text-2xl font-bold'>₹{fairs?.bike}</h2>
           </div>
-          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>{setIsConfirmRidePanelOpen(true),setVehicleType(()=>'auto')}}>
+          <div className='flex items-center justify-between  p-5 border-2 border-gray-200 active:border-black rounded-xl transition-all duration-100' onClick={()=>openConfirmRidePanel('auto')}>
             <img className='h-15' src='https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=576/height=384/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8xZGRiOGM1Ni0wMjA0LTRjZTQtODFjZS01NmExMWEwN2ZlOTgucG5n'/>
             <div className='flex flex-col w-1/2 '>
               <h4 className='flex text-xl gap-2 items-center font-semibold'>UberAuto <span className='flex gap-0.5 items-center font-normal'><FaUser />3</span></h4>

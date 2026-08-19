@@ -56,6 +56,7 @@ const CaptainHome = () => {
   useEffect(() => {
     const unsubscribe = receiveMessageFromEvent('new-ride', (data) => {
       setRide(data);
+      setIsConfirmRidePopUpOpen(false);
       setIsRidePopUpOpen(true);
     });
 
@@ -64,6 +65,10 @@ const CaptainHome = () => {
 
 
     async function confirmRide() {
+      if (!ride?._id) {
+        return;
+      }
+
       try {
         const response = await axios.post(`${serverURL}/api/ride/confirm`, {
           rideId: ride._id,
@@ -106,13 +111,19 @@ const CaptainHome = () => {
 
   useGSAP(()=>{
     gsap.to(isRidePopUpRef.current,{
-      transform: isRidePopUpOpen ? 'translateY(0)' : 'translateY(100%)'
+      transform: isRidePopUpOpen ? 'translateY(0)' : 'translateY(100%)',
+      duration: 0.35,
+      ease: 'power2.out',
+      overwrite: 'auto'
     })
   },[isRidePopUpOpen])
 
   useGSAP(()=>{
     gsap.to(isConfirmRidePopUpRef.current,{
-      transform: isConfirmRidePopUpOpen ? 'translateY(0)' : 'translateY(100%)'
+      transform: isConfirmRidePopUpOpen ? 'translateY(0)' : 'translateY(100%)',
+      duration: 0.35,
+      ease: 'power2.out',
+      overwrite: 'auto'
     })
   },[isConfirmRidePopUpOpen])
 
@@ -135,7 +146,6 @@ const CaptainHome = () => {
         <RidePopUp 
         ride={ride}
         setIsRidePopUpOpen={setIsRidePopUpOpen}
-        setIsConfirmRidePopUpOpen={setIsConfirmRidePopUpOpen}
         confirmRide={confirmRide}
          />
       </div>
