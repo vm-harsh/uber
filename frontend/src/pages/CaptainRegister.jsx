@@ -29,9 +29,9 @@ const [formData, setFormData] = useState(() => {
 
   return (
     <div>
-      <div className='w-full h-screen p-7 flex flex-col justify-between '>
+      <div className='auth-mobile w-full h-screen p-7 flex flex-col justify-between '>
         <div>
-          <img src='https://imgs.search.brave.com/TprvZh85fAahrBWHZleW93P4YzpNwOLKh9lmIiXpOtk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbGF5/LWxoLmdvb2dsZXVz/ZXJjb250ZW50LmNv/bS9iWFZFb21YTlZp/ZWpZR3I0SmU1RWQ0/SjA4cThHMDBGVVBZ/Q2Rnb2lQTkYtMlhB/cVdNWUFHQ0JySy1u/ME9NWUkzT0FMWj13/MjQwLWg0ODAtcnc' className='w-35 mb-10 rounded-2xl'/>
+          <img src='https://imgs.search.brave.com/TprvZh85fAahrBWHZleW93P4YzpNwOLKh9lmIiXpOtk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbGF5/LWxoLmdvb2dsZXVz/ZXJjb250ZW50LmNv/bS9iWFZFb21YTlZp/ZWpZR3I0SmU1RWQ0/SjA4cThHMDBGVVBZ/Q2Rnb2lQTkYtMlhB/cVdNWUFHQ0JySy1u/ME9NWUkzT0FMWj13/MjQwLWg0ODAtcnc' className='w-30 mb-10 rounded-2xl'/>
         <form className='flex flex-col items-start w-full' onSubmit={handleSubmit}>
           <div className='flex gap-4'>
             <div className='w-full flex flex-col gap-3'>
@@ -50,7 +50,7 @@ const [formData, setFormData] = useState(() => {
 
          
           
-          <Link to={'/vehicle-details'}  className=' flex items-center justify-center w-full py-6 bg-black text-white text-2xl rounded-xl cursor-pointer' >Next</Link>
+          <Link to={'/vehicle-details'}  className='flex items-center justify-center w-full py-3 bg-black text-white text-2xl rounded-xl cursor-pointer' >Next</Link>
         </form>
         <h2 className='text-xl text-center mt-3 cursor-pointer'>Already have an account? <Link to='/c-login' className='font-semibold'> Login </Link></h2>
         </div>

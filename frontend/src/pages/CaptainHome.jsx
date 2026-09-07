@@ -9,6 +9,7 @@ import ConfirmRidePanelPopUp from "../components/ConfirmRidePanelPopUp";
 import { SocketContext } from "../context/SocketProvider";
 import { CaptainContext } from "../context/CaptainProvider";
 import { UserContext } from "../context/UserProvider";
+import map from '/map.png'
 import axios from "axios";
 
 const CaptainHome = () => {
@@ -120,10 +121,10 @@ const CaptainHome = () => {
   }, [isConfirmRidePopUpOpen]);
 
   return (
-    <div className='w-full h-screen relative overflow-hidden bg-gray-100 flex flex-col justify-between'>
+    <div className='app-shell captain-home relative flex h-full flex-col justify-between overflow-hidden bg-gray-100'>
       {/* Floating Top Header */}
-      <header className='fixed top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-auto'>
-        <div className='bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-md border border-gray-100 flex items-center gap-2'>
+      <header className='captain-home-header absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-auto'>
+        <div className='captain-home-brand bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-md border border-gray-100 flex items-center gap-2'>
           <img
             src='https://imgs.search.brave.com/lM0xhQNGRYYDXm7242HMViQjKMFXw2crF0SuCdqEwD8/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy81/LzU4L1ViZXJfbG9n/b18yMDE4LnN2Zw'
             alt='Uber Captain'
@@ -144,24 +145,24 @@ const CaptainHome = () => {
       </header>
 
       {/* Map / Illustration Top View */}
-      <div className='flex-1 w-full relative'>
+      <div className='min-h-0 flex-1 w-full relative'>
         <img
-          src='https://imgs.search.brave.com/PGPRil5Jz9rjEuBW1RmTIsQvLLXiS61EU_JCixHhyzw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvdHJhbnNwb3J0/LXNlcnZpY2UtYXBw/LXRlY2hub2xvZ3kt/aWNvbl8yNDkwOC0y/ODQyNC5qcGc_c2Vt/dD1haXNfaHlicmlk/Jnc9NzQwJnE9ODA'
+          src={map}
           alt='Captain Route Map'
           className='w-full h-full object-cover'
         />
-        <div className='absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/10 pointer-events-none'></div>
+        <div className='absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/10 pointer-events-none'></div>
       </div>
 
       {/* Captain Stats Dashboard Footer */}
-      <div className="p-4 z-10">
+      <div className="captain-home-footer p-4 z-10">
         <CaptainDetails />
       </div>
 
       {/* RIDE POPUP BOTTOM SHEET */}
       <div
         ref={isRidePopUpRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-30 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-30 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           isRidePopUpOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
@@ -175,7 +176,7 @@ const CaptainHome = () => {
       {/* CONFIRM / START RIDE OTP BOTTOM SHEET */}
       <div
         ref={isConfirmRidePopUpRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-40 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-40 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           isConfirmRidePopUpOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
@@ -189,4 +190,4 @@ const CaptainHome = () => {
   )
 }
 
-export default CaptainHome
+export default CaptainHome

@@ -42,7 +42,7 @@ const UserLogin = () => {
 
   return (
     <div>
-      <div className='w-full h-screen p-7 flex flex-col justify-between '>
+      <div className='auth-mobile w-full h-screen p-7 flex flex-col justify-between '>
         <div>
           <img src='https://imgs.search.brave.com/lM0xhQNGRYYDXm7242HMViQjKMFXw2crF0SuCdqEwD8/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy81/LzU4L1ViZXJfbG9n/b18yMDE4LnN2Zw' className='w-35 mb-15'/>
         <form className='flex flex-col items-start w-full' onSubmit={handleSubmit}>

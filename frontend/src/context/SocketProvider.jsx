@@ -18,10 +18,6 @@ const SocketProvider = ({ children }) => {
       transports: ['websocket', 'polling'],
     });
 
-    socketInstance.on('connect', () => {
-      console.log('Socket connected:', socketInstance.id);
-    });
-
     socketInstance.on('connect_error', (error) => {
       console.error('Socket connection error:', error.message);
     });
@@ -39,8 +35,6 @@ const SocketProvider = ({ children }) => {
       console.warn('Socket is not ready yet.');
       return false;
     }
-
-    console.log(`Sending message to event '${eventName}':`, payload);
     socket.emit(eventName, payload);
     return true;
   };

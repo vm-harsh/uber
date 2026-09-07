@@ -82,3 +82,108 @@
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite;
 }
+
+.app-shell {
+  width: min(100%, 820px);
+  height: 100dvh;
+  margin: 0 auto;
+}
+
+.captain-details-card {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    width: 100%;
+  }
+
+  .captain-home-header {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .captain-home-brand {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .captain-home-footer {
+    padding: 0.75rem;
+  }
+
+  .captain-details-card {
+    padding: 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .captain-details-card .captain-profile-row {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .captain-details-card .captain-earnings {
+    flex-shrink: 0;
+  }
+
+  .captain-details-card .captain-earnings strong {
+    font-size: 1.15rem;
+  }
+
+  .captain-details-card .captain-stat {
+    min-width: 0;
+    padding: 0.65rem 0.25rem;
+    border-radius: 0.9rem;
+  }
+
+  .captain-details-card .captain-stat-label {
+    font-size: 0.55rem;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-mobile {
+    min-height: 100dvh;
+    height: auto;
+    padding: 20px 28px 18px;
+  }
+
+  .auth-mobile img {
+    width: 100px;
+    margin-bottom: 30px;
+  }
+
+  .auth-mobile label {
+    font-size: 1.35rem;
+    line-height: 1.2;
+    margin-bottom: 0.55rem;
+  }
+
+  .auth-mobile input {
+    min-width: 0;
+    padding: 1rem 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    border-radius: 1rem;
+  }
+
+  .auth-mobile button,
+  .auth-mobile > a {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1.15rem;
+  }
+
+  .auth-mobile h2 {
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .auth-mobile form > div.flex {
+    gap: 0.75rem;
+  }
+}

@@ -176,7 +176,7 @@ const Home = () => {
   }, [iswaitingForDriverPanel]);
 
   const getSuggestions = async (address) => {
-    if (!address || address.length < 2) {
+    if (!address || address.length < 3) {
       setSuggestions([]);
       return;
     }
@@ -252,14 +252,14 @@ const Home = () => {
   };
 
   return (
-    <div className='w-full h-screen relative overflow-hidden bg-gray-100'>
+    <div className='app-shell relative overflow-hidden bg-gray-100'>
       {/* Background Live Map */}
       <div className='absolute inset-0 z-0'>
         <LiveRideMap captainLocation={captainLocation} />
       </div>
 
       {/* Floating Top Header */}
-      <header className='fixed top-4 left-15 right-4 z-20 flex justify-between items-center pointer-events-auto'>
+      <header className='absolute top-4 left-15 right-4 z-20 flex justify-between items-center pointer-events-auto'>
         <div className='bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-md border border-gray-100 flex items-center gap-2'>
           <img
             src='https://imgs.search.brave.com/lM0xhQNGRYYDXm7242HMViQjKMFXw2crF0SuCdqEwD8/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy81/LzU4L1ViZXJfbG9n/b18yMDE4LnN2Zw'
@@ -280,7 +280,7 @@ const Home = () => {
       {/* Bottom Search Container (Slides down when any panel opens) */}
       <div
         ref={searchBoxRef}
-        className={`fixed bottom-0 left-0 w-full z-20 transition-opacity ${
+        className={`absolute bottom-0 left-0 w-full z-20 transition-opacity ${
           isAnyBottomSheetOpen ? 'pointer-events-none' : 'pointer-events-auto'
         }`}
       >
@@ -388,7 +388,7 @@ const Home = () => {
       {/* BOTTOM SHEET 1: Choose Vehicle */}
       <div
         ref={vehiclePanelRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-30 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-30 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           isVehiclePanelOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
@@ -403,7 +403,7 @@ const Home = () => {
       {/* BOTTOM SHEET 2: Confirm Ride */}
       <div
         ref={confirmRidePanelRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-40 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-40 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           isConfirmRidePanelOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
@@ -421,7 +421,7 @@ const Home = () => {
       {/* BOTTOM SHEET 3: Looking for Driver (Searching...) */}
       <div
         ref={vehicleFoundRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-50 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           isVehicleFoundPanel ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
@@ -436,7 +436,7 @@ const Home = () => {
       {/* BOTTOM SHEET 4: Driver Found & Waiting / OTP */}
       <div
         ref={waitingForDriverRef}
-        className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
+        className={`absolute bottom-0 left-0 right-0 w-full z-50 bg-white rounded-t-3xl shadow-2xl border-t border-gray-100 px-5 pt-3 pb-6 max-w-2xl mx-auto ${
           iswaitingForDriverPanel ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >

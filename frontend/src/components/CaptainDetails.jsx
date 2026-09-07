@@ -24,9 +24,9 @@ const CaptainDetails = () => {
     : 'Captain Harsh';
 
   return (
-    <div className='bg-white rounded-3xl p-5 shadow-lg border border-gray-100'>
+    <div className='captain-details-card bg-white rounded-3xl p-5 shadow-lg border border-gray-100'>
       {/* Header Profile Row */}
-      <div className="w-full flex justify-between items-center pb-4 border-b border-gray-100">
+      <div className="captain-profile-row w-full flex justify-between items-center pb-4 border-b border-gray-100">
         <div className="flex items-center gap-3.5">
           <div className='relative'>
             <img
@@ -46,7 +46,7 @@ const CaptainDetails = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-end">
+        <div className="captain-earnings flex flex-col items-end">
           <span className="text-2xl font-black text-gray-900 leading-tight">₹295.20</span>
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Today's Earned</span>
         </div>
@@ -54,26 +54,26 @@ const CaptainDetails = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-2.5 mt-4">
-        <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+        <div className="captain-stat flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
           <IoTimeOutline className="text-2xl text-blue-600 mb-1" />
           <h4 className="text-lg font-bold text-gray-900 leading-tight">10.2</h4>
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Hours Online</p>
+          <p className="captain-stat-label text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Hours Online</p>
         </div>
 
-        <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+        <div className="captain-stat flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
           <SiSpeedtest className="text-2xl text-orange-500 mb-1" />
           <h4 className="text-lg font-bold text-gray-900 leading-tight">30 KM</h4>
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Distance</p>
+          <p className="captain-stat-label text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Distance</p>
         </div>
 
-        <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+        <div className="captain-stat flex flex-col items-center justify-center p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
           <CgNotes className="text-2xl text-green-600 mb-1" />
           <h4 className="text-lg font-bold text-gray-900 leading-tight">20</h4>
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Completed</p>
+          <p className="captain-stat-label text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Completed</p>
         </div>
       </div>
     </div>
   )
 }
 
-export default CaptainDetails
+export default CaptainDetails
