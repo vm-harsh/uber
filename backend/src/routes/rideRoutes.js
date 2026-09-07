@@ -1,7 +1,7 @@
 const express = require('express');
 const {body} = require('express-validator');
 const router = express.Router();
-const {createRideController, getFareController, confirmRideController, startRideController} = require('../controllers/rideController');
+const {createRideController, getFareController, confirmRideController, startRideController, endRideController} = require('../controllers/rideController');
 const { userAuth, captainAuth } = require('../middlewares/authMiddleware');
 
 
@@ -23,7 +23,11 @@ router.post('/confirm',captainAuth,[
 
 router.post('/start-ride',captainAuth,[
   body('rideId').isString().isLength({min:24,max:24}).withMessage('Invalid rideId'),
-  body('otp').isString().isLength({min:6,max:6}).withMessage('Invalid OTP')
+  body('otp').isString().isLength({min:4,max:6}).withMessage('Invalid OTP')
 ],startRideController);
+
+router.post('/end-ride',captainAuth,[
+  body('rideId').isString().isLength({min:24,max:24}).withMessage('Invalid rideId')
+],endRideController);
 
 module.exports = router

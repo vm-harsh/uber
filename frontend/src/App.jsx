@@ -35,16 +35,16 @@ const App = () => {
       <Route path='/user/logout' element={<UserProtectedWrapper>
         <UserLogout/>
       </UserProtectedWrapper>}/>
-      <Route path='captain-home' element={<CaptainProtectedWrapper>
+      <Route path='/captain-home' element={<CaptainProtectedWrapper>
         <CaptainHome/>
       </CaptainProtectedWrapper>}/>
-      <Route path='captain/logout' element={<CaptainProtectedWrapper>
+      <Route path='/captain/logout' element={<CaptainProtectedWrapper>
         <CaptainLogout/>
       </CaptainProtectedWrapper>}/>
       <Route path='/riding' element={<UserProtectedWrapper>
         <Riding/>
       </UserProtectedWrapper>}/>
-      <Route path='captain-riding' element={<CaptainProtectedWrapper>
+      <Route path='/captain-riding' element={<CaptainProtectedWrapper>
         <CaptainRiding/>
       </CaptainProtectedWrapper>}/>
     </Routes>

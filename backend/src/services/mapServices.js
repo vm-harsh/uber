@@ -86,19 +86,30 @@ async function getAutoCompleteSuggestions(address) {
 }
 
 
-const getCaptainsInTheRadius = async (lat, lng, radius) => {
+const getCaptainsInTheRadius = async (lat, lng, radius = 10) => {
+  try {
+    if (lat && lng) {
+      // 1 deg latitude ~ 111 km, 1 deg longitude ~ 111 km * cos(lat)
+      const latDelta = radius / 111;
+      const lngDelta = radius / (111 * Math.cos((lat * Math.PI) / 180) || 1);
 
-  // radius in kilometers
-  const captains = await captainModel.find({
-    location: {
-      $geoWithin: {
-        $centerSphere: [[lat, lng], radius / 6378.1] // radius in radians,
-      },
-    },
-  });
+      const captains = await captainModel.find({
+        'location.lat': { $gte: lat - latDelta, $lte: lat + latDelta },
+        'location.lng': { $gte: lng - lngDelta, $lte: lng + lngDelta },
+        socketId: { $exists: true, $ne: null }
+      });
 
-  return captains;
-}
+      if (captains && captains.length > 0) {
+        return captains;
+      }
+    }
+  } catch (err) {
+    console.error('Error finding captains in radius:', err.message);
+  }
+
+  // Fallback: return active captains with connected sockets
+  return await captainModel.find({ socketId: { $exists: true, $ne: null } });
+};
 
 
 module.exports = { getAddressCoordinates, getDistanceAndTime, getAutoCompleteSuggestions, getCaptainsInTheRadius };

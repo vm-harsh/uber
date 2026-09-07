@@ -7,7 +7,13 @@ async function getFare(pickup, destination) {
     throw new Error('Pickup and destination are required');
   }
 
-  const distanceTime = await mapServices.getDistanceAndTime(pickup, destination);
+  let distanceTime;
+  try {
+    distanceTime = await mapServices.getDistanceAndTime(pickup, destination);
+  } catch (err) {
+    console.warn('Map service distance estimate error, using default calculation:', err.message);
+    distanceTime = { distance: 10, duration: 25 };
+  }
 
   const perKmRates = { auto: 10, car: 15, bike: 8 };
   const perMinRates = { car: 3, bike: 1.5 };
@@ -21,9 +27,9 @@ async function getFare(pickup, destination) {
 
   // Round each value to 2 decimals
   const formattedFares = {
-    auto: fares.auto.toFixed(2),
-    car: fares.car.toFixed(2),
-    bike: fares.bike.toFixed(2)
+    auto: Number(fares.auto).toFixed(2),
+    car: Number(fares.car).toFixed(2),
+    bike: Number(fares.bike).toFixed(2)
   };
 
   return formattedFares;
@@ -88,7 +94,7 @@ module.exports.startRide = async ({ rideId, captain, otp }) => {
     throw new Error('You are not assigned to this ride');
   }
 
-  if (ride.status !== 'accepted') {
+  if (ride.status !== 'accepted' && ride.status !== 'pending') {
     throw new Error('Ride is not ready to start');
   }
 
@@ -97,6 +103,36 @@ module.exports.startRide = async ({ rideId, captain, otp }) => {
   }
 
   ride.status = 'ongoing';
+  await ride.save();
+
+  const updatedRide = await rideModel
+    .findById(rideId)
+    .populate('user')
+    .populate('captain');
+
+  return updatedRide;
+};
+
+module.exports.endRide = async ({ rideId, captain }) => {
+  if (!rideId) {
+    throw new Error('rideId is required');
+  }
+
+  const ride = await rideModel.findById(rideId);
+
+  if (!ride) {
+    throw new Error('Ride not found');
+  }
+
+  if (!ride.captain || ride.captain.toString() !== captain._id.toString()) {
+    throw new Error('You are not authorized to end this ride');
+  }
+
+  if (ride.status !== 'ongoing' && ride.status !== 'accepted') {
+    throw new Error('Ride is not ongoing');
+  }
+
+  ride.status = 'completed';
   await ride.save();
 
   const updatedRide = await rideModel
