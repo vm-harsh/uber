@@ -21,6 +21,8 @@ const Home = () => {
   const { serverURL, user } = useContext(UserContext);
   const [pickUp, setPickUp] = useState('');
   const [destination, setDestination] = useState('');
+  const [pickUpCoords, setPickUpCoords] = useState(null);
+  const [destinationCoords, setDestinationCoords] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [activeField, setActiveField] = useState('');
   
@@ -255,7 +257,15 @@ const Home = () => {
     <div className='app-shell relative overflow-hidden bg-gray-100'>
       {/* Background Live Map */}
       <div className='absolute inset-0 z-0'>
-        <LiveRideMap captainLocation={captainLocation} />
+        <LiveRideMap
+          captainLocation={captainLocation}
+          userLocation={pickUpCoords}
+          destinationLocation={destinationCoords}
+          vehicleType={vehicleType}
+          userLabel='Pickup'
+          destLabel='Destination'
+          showRoute={true}
+        />
       </div>
 
       {/* Floating Top Header */}
@@ -363,6 +373,8 @@ const Home = () => {
               activeField={activeField}
               setPickUp={setPickUp}
               setDestination={setDestination}
+              setPickUpCoords={setPickUpCoords}
+              setDestinationCoords={setDestinationCoords}
               setSuggestions={setSuggestions}
               Suggestions={suggestions}
               setIsVehiclePanelOpen={setIsVehiclePanelOpen}

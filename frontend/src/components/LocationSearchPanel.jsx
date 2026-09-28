@@ -1,27 +1,35 @@
 import React from 'react'
 import { IoLocationSharp } from "react-icons/io5";
-import { MdHistory, MdPlace } from "react-icons/md";
+import { MdHistory } from "react-icons/md";
 
 const DEFAULT_POPULAR_LOCATIONS = [
   {
     name: 'Connaught Place',
     secondary: 'Central Delhi, New Delhi, Delhi',
-    display_name: 'Connaught Place, Central Delhi, New Delhi, Delhi'
+    display_name: 'Connaught Place, Central Delhi, New Delhi, Delhi',
+    lat: 28.6315,
+    lon: 77.2167
   },
   {
     name: 'Indira Gandhi International Airport (DEL)',
     secondary: 'New Delhi, Delhi 110037',
-    display_name: 'Indira Gandhi International Airport (DEL), New Delhi, Delhi 110037'
+    display_name: 'Indira Gandhi International Airport (DEL), New Delhi, Delhi 110037',
+    lat: 28.5562,
+    lon: 77.1000
   },
   {
     name: 'Cyber Hub, DLF Phase 2',
     secondary: 'Sector 24, Gurugram, Haryana',
-    display_name: 'Cyber Hub, DLF Phase 2, Sector 24, Gurugram, Haryana'
+    display_name: 'Cyber Hub, DLF Phase 2, Sector 24, Gurugram, Haryana',
+    lat: 28.4952,
+    lon: 77.0892
   },
   {
     name: 'Hauz Khas Village',
     secondary: 'Deer Park, Hauz Khas, New Delhi',
-    display_name: 'Hauz Khas Village, Deer Park, Hauz Khas, New Delhi'
+    display_name: 'Hauz Khas Village, Deer Park, Hauz Khas, New Delhi',
+    lat: 28.5535,
+    lon: 77.1944
   }
 ];
 
@@ -32,13 +40,24 @@ const LocationSearchPanel = ({
   setSuggestions,
   activeField,
   setPickUp,
-  setDestination
+  setDestination,
+  setPickUpCoords,
+  setDestinationCoords
 }) => {
-  const handleSelect = (fullName) => {
+  const handleSelect = (location) => {
+    const full = location.display_name || location.name || '';
+    const coords = location.lat && location.lon ? { lat: Number(location.lat), lng: Number(location.lon) } : null;
+
     if (activeField === 'pickUp') {
-      setPickUp(fullName);
+      setPickUp(full);
+      if (setPickUpCoords && coords) {
+        setPickUpCoords(coords);
+      }
     } else if (activeField === 'destination') {
-      setDestination(fullName);
+      setDestination(full);
+      if (setDestinationCoords && coords) {
+        setDestinationCoords(coords);
+      }
     }
     setSuggestions([]);
   };
@@ -61,7 +80,7 @@ const LocationSearchPanel = ({
         return (
           <div
             key={index}
-            onClick={() => handleSelect(full)}
+            onClick={() => handleSelect(location)}
             className='flex items-center gap-3.5 p-3 rounded-xl bg-gray-50/80 hover:bg-gray-100 active:scale-[0.99] border border-gray-100 transition-all cursor-pointer'
           >
             <div className='w-10 h-10 rounded-full bg-white shadow-xs border border-gray-200 flex items-center justify-center text-gray-700 shrink-0'>

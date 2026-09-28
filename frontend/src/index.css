@@ -83,6 +83,68 @@
   animation: shimmer 1.8s infinite;
 }
 
+/* Expressive map markers and pulsing animations */
+.custom-map-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+@keyframes marker-pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes vehicle-pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes destination-pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.user-pulse-marker {
+  animation: marker-pulse-glow 2s infinite;
+}
+
+.vehicle-pulse-marker {
+  animation: vehicle-pulse-glow 2.2s infinite;
+}
+
+.dest-pulse-marker {
+  animation: destination-pulse-glow 2s infinite;
+}
+
+/* Leaflet container smooth rendering */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  z-index: 0;
+}
+
 .app-shell {
   width: min(100%, 820px);
   height: 100dvh;

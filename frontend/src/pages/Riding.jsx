@@ -59,7 +59,19 @@ const Riding = () => {
     <div className='w-full h-screen relative overflow-hidden bg-gray-100 flex flex-col justify-between'>
       {/* Fullscreen Interactive Leaflet Live Map */}
       <div className='absolute inset-0 z-0'>
-        <LiveRideMap captainLocation={captainLocation} />
+        <LiveRideMap
+          captainLocation={captainLocation}
+          userLocation={
+            ride?.pickupCoordinates ||
+            (ride?.pickup && ride?.destination
+              ? { lat: (captainLocation?.lat || 28.6139) + 0.015, lng: (captainLocation?.lng || 77.2090) + 0.018 }
+              : null)
+          }
+          vehicleType={ride?.captain?.vehicle?.vehicleType || ride?.vehicleType || 'car'}
+          userLabel='Dropoff / Destination'
+          captainLabel={driverName.split(' ')[0]}
+          showRoute={true}
+        />
       </div>
 
       {/* Floating Top Header */}

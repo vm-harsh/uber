@@ -66,7 +66,18 @@ const CaptainRiding = () => {
     <div className='w-full h-screen relative overflow-hidden bg-gray-100 flex flex-col justify-between'>
       {/* Background Fullscreen Live Map */}
       <div className='absolute inset-0 z-0'>
-        <LiveRideMap captainLocation={captainCoords} />
+        <LiveRideMap
+          captainLocation={captainCoords}
+          userLocation={
+            activeRide?.destination
+              ? { lat: (captainCoords?.lat || 28.6139) + 0.015, lng: (captainCoords?.lng || 77.2090) + 0.018 }
+              : null
+          }
+          vehicleType={captain?.vehicle?.vehicleType || activeRide?.vehicleType || 'car'}
+          captainLabel='You (Driver)'
+          userLabel='Dropoff'
+          showRoute={true}
+        />
       </div>
 
       {/* Floating Top Header */}
